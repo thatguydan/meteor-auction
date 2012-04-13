@@ -1,0 +1,130 @@
+<head>
+	<title>Meteor Auctions</title>
+	<link rel="stylesheet" href="/css/bootstrap.css" type="text/css" media="screen" title="Bootstrap" charset="utf-8">
+</head>
+
+<body>
+	<div class="container">
+		{{> header}}
+		{{> auctions}}
+	</div>
+</body>
+
+<template name="header">
+	<header>
+    	<h2>Meteor Auctions v.1</h2>
+	</header>
+</template>
+
+<template name="auctions">
+	<section class="auction_container">
+		<button class="btn" data-toggle="modal" href="#createModal">Create Auction</button>
+		<br /><br />
+		{{#each items}}
+		<div class="accordion" id="accordion2">
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse"  href="#collapse{{_id}}"><i class="icon-chevron-right"></i> {{title}}</a>
+				</div>
+				<div id="collapse{{_id}}" class="accordion-body collapse in">
+					<div class="accordion-inner">
+						<form class="form-horizontal">
+						    <fieldset>
+								<div class="control-group">
+									<label class="control-label">Current bid</label>
+									<div class="controls">
+										<h3>${{current_bid}}.00</h3>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label" for="appendedPrependedInput">Your bid</label>
+									<div class="controls">
+										<div class="input-prepend input-append">
+											<span class="add-on">$</span><input class="span2" class="newBidAmount" data-auctionid="{{_id}}" size="16" type="text" x-webkit-speech=""><span class="add-on">.00</span>
+										</div>
+									</div>
+								</div>
+								<div class="control-group">
+									<div class="controls">
+										<button class="btn btn-primary bid_warning_popover enterNewBid" data-auctionid="{{_id}}">Bid</button>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Item details</label>
+									<div class="controls">
+										<p>{{details}}</p>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>History</th>
+								</tr>
+							</thead>
+							<tbody>
+							{{#each history}}
+								<tr>
+									<td><i class="icon-time"></i> {{date}}</td>
+									<td>{{message}}</td>
+									
+								</tr>
+							{{else}}
+								<tr>
+									<td><i class="icon-chevron-right"></i> There is no historical data about this auction.</td>
+								</tr>
+							{{/each}}
+							</tbody>
+						</table>	
+					</div>
+				</div>
+			</div>
+		</div>
+		{{else}}
+			<div class="alert alert-info">
+				<i class="icon-chevron-right"></i> There are no auctions under-way at the moment.
+			</div>
+		{{/each}}
+	</secton>
+	<div class="modal fade" id="createModal">
+	  <div class="modal-header">
+	    <a class="close" data-dismiss="modal">×</a>
+	    <h3>Auction Details</h3>
+	  </div>
+	  <div class="modal-body">
+		<form class="form-horizontal">
+		    <fieldset>
+				<div class="control-group" id="create_auction_title_control">
+					<label class="control-label" for="create_auction_title">Title</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" id="create_auction_title" x-webkit-speech="">
+					</div>
+				</div>
+
+				<div class="control-group" id="create_auction_reserve_control">
+					<label class="control-label" for="create_auction_reserve">Reserve Price</label>
+					<div class="controls">
+						<div class="input-prepend input-append">
+							<span class="add-on">$</span><input class="span1" id="create_auction_reserve" size="16" type="text" x-webkit-speech=""><span class="add-on">.00</span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="control-group" id="create_auction_details_control">
+					<label class="control-label" for="appendedPrependedInput">Item Details</label>
+					<div class="controls">
+						<textarea class="input-xlarge" id="create_auction_details" rows="3"></textarea>
+					</div>
+				</div>
+				
+			</fieldset>
+		</form>
+	  </div>
+	  <div class="modal-footer">
+	    <a href="#" class="btn" id="closeCreateAuction">Close</a>
+	    <a href="#" id="createAuction" class="btn btn-primary" data-loading-text="Creating..." data-complete-text="Create">Create</a>
+	  </div>
+	</div>
+</template>
